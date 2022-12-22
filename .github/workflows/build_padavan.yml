@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       production:
-        description: 设置固件型号：
-        default: "RM2100"
+        description: Set the firmware model：
+        default: "WR1200JS"
         required: false
       cloneurl:
-        description: 设置源码地址：
+        description: Set the source address：
         default: "https://github.com/MeIsReallyBa/padavan-4.4.git"
         # default: "https://github.com/keke1023/Padavan.git"
         # default: "https://github.com/vb1980/Padavan-KVR.git"
@@ -46,7 +46,7 @@ jobs:
         run: |
           echo "DATE=$(TZ='Asia/Shanghai' date '+%Y.%m.%d-%H%M')" >> $GITHUB_ENV
           echo "NAME=Padavan-${{ github.event.inputs.production }}" >> $GITHUB_ENV
-          echo 开始编译时间： >> $IMAGES/readme.txt
+          echo start compile time： >> $IMAGES/readme.txt
           TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S' >> $IMAGES/readme.txt
           git clone --depth=1 ${{ github.event.inputs.cloneurl }} $RT_N56U > /dev/null
           cd $RT_N56U/toolchain-mipsel
@@ -64,7 +64,7 @@ jobs:
         run: |
           for m in ${{ github.event.inputs.production }}; do
             pushd $TRUNK
-            echo "::group::开始编译 ${m}..."
+            echo "::group::start compiling ${m}..."
             sudo ./clear_tree || echo
             sudo ./build_firmware_modify $m > /dev/null
             ls -l images
@@ -76,16 +76,16 @@ jobs:
       - name: Organize compile infomations
         run: |
           cd $IMAGES
-          echo 完成编译时间： >> readme.txt
+          echo complete compile time： >> readme.txt
           TZ='Asia/Shanghai'  date  '+%Y-%m-%d %H:%M:%S' >> readme.txt
           echo >> readme.txt
-          echo 源码信息： >> readme.txt
+          echo source information： >> readme.txt
           pushd $RT_N56U
           git ls-remote --get-url origin >> $IMAGES/readme.txt
           git log --shortstat >> $IMAGES/readme.txt
           popd
           echo >> readme.txt
-          echo "md5校验值：" >> readme.txt
+          echo "md5 Check value：" >> readme.txt
           for m in *.trx
           do
             mv -fv "$m" "${m%.*}_${{ env.DATE }}.trx"
