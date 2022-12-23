@@ -9,7 +9,8 @@ on:
         required: false
       cloneurl:
         description: Set the source address：
-        default: "https://github.com/MeIsReallyBa/padavan-4.4.git"
+        default: "https://gitlab.com/mahtabctg/padavan-ng.git"
+        # default: "https://github.com/MeIsReallyBa/padavan-4.4.git"
         # default: "https://github.com/keke1023/Padavan.git"
         # default: "https://github.com/vb1980/Padavan-KVR.git"
         required: false
